@@ -11,7 +11,6 @@ import com.example.demo.dto.CommentUpdateRequest;
 import com.example.demo.service.CommentService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
