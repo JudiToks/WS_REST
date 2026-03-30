@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog REST API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #555;
+        }
+        .endpoint {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2ecc71;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .post { background: #3498db; color: white; }
+        .get { background: #2ecc71; color: white; }
+        .put { background: #f39c12; color: white; }
+        .delete { background: #e74c3c; color: white; }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #34495e;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #ecf0f1;
+        }
+        .status-200 { color: #27ae60; font-weight: bold; }
+        .status-201 { color: #2980b9; font-weight: bold; }
+        .status-400 { color: #e67e22; font-weight: bold; }
+        .status-401 { color: #c0392b; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>📚 Blog REST API Documentation</h1>
+    
+    <div style="background: white; padding: 20px; border-radius: 5px; margin-bottom: 30px;">
+        <h2>Base URL</h2>
+        <div class="code-block">http://localhost:1820/api/v1</div>
+        
+        <h2>Authentication</h2>
+        <p>All protected endpoints require a JWT token in the header:</p>
+        <div class="code-block">Authorization: Bearer &lt;token&gt;</div>
+    </div>
+
+    <h2>Authentication Endpoints</h2>
+    
+    <div class="endpoint">
+        <h3><span class="method post">POST</span>/auth/register</h3>
+        <p><strong>Description:</strong> Create a new user account</p>
+        <p><strong>Body:</strong></p>
+        <div class="code-block">{
+  "username": "jean",
+  "email": "jean@example.com",
+  "password": "password123"
+}</div>
+        <p><strong>Response (200):</strong></p>
+        <div class="code-block">{
+  "token": "eyJhbGciOiJIUzUxMiJ9...",
+  "username": "jean",
+  "message": "Registered successfully"
+}</div>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method post">POST</span>/auth/login</h3>
+        <p><strong>Description:</strong> Authenticate and get JWT token</p>
+        <p><strong>Body:</strong></p>
+        <div class="code-block">{
+  "username": "jean",
+  "password": "password123"
+}</div>
+        <p><strong>Response (200):</strong></p>
+        <div class="code-block">{
+  "token": "eyJhbGciOiJIUzUxMiJ9...",
+  "username": "jean",
+  "message": "Login successful"
+}</div>
+    </div>
+
+    <h2>Post Endpoints</h2>
+    
+    <div class="endpoint">
+        <h3><span class="method post">POST</span>/posts</h3>
+        <p><strong>Authorization:</strong> Bearer &lt;token&gt;</p>
+        <p><strong>Body:</strong></p>
+        <div class="code-block">{
+  "title": "My First Post",
+  "content": "This is the content"
+}</div>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span>/posts</h3>
+        <p><strong>Description:</strong> List all posts</p>
+        <p><strong>Response (200):</strong> Array of posts</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span>/posts/{id}</h3>
+        <p><strong>Description:</strong> Get a single post</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method put">PUT</span>/posts/{id}</h3>
+        <p><strong>Authorization:</strong> Bearer &lt;token&gt;</p>
+        <p><strong>Body:</strong></p>
+        <div class="code-block">{
+  "title": "Updated Title",
+  "content": "Updated content"
+}</div>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method delete">DELETE</span>/posts/{id}</h3>
+        <p><strong>Authorization:</strong> Bearer &lt;token&gt;</p>
+    </div>
+
+    <h2>Comments Endpoints</h2>
+    
+    <div class="endpoint">
+        <h3><span class="method post">POST</span>/comments</h3>
+        <p><strong>Authorization:</strong> Bearer &lt;token&gt;</p>
+        <p><strong>Body:</strong></p>
+        <div class="code-block">{
+  "postId": 1,
+  "content": "Great post!"
+}</div>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span>/comments?postId=1</h3>
+        <p><strong>Description:</strong> List all comments for a post</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method delete">DELETE</span>/comments/{id}</h3>
+        <p><strong>Authorization:</strong> Bearer &lt;token&gt;</p>
+    </div>
+
+    <h2>Ratings Endpoints</h2>
+    
+    <div class="endpoint">
+        <h3><span class="method post">POST</span>/ratings</h3>
+        <p><strong>Authorization:</strong> Bearer &lt;token&gt;</p>
+        <p><strong>Body:</strong></p>
+        <div class="code-block">{
+  "postId": 1,
+  "score": 5,
+  "comment": "Excellent post!"
+}</div>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span>/ratings?postId=1</h3>
+        <p><strong>Description:</strong> Get all ratings for a post</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method delete">DELETE</span>/ratings/{id}</h3>
+        <p><strong>Authorization:</strong> Bearer &lt;token&gt;</p>
+    </div>
+
+    <h2>Status Codes</h2>
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Meaning</th>
+        </tr>
+        <tr>
+            <td><span class="status-200">200</span></td>
+            <td>Success</td>
+        </tr>
+        <tr>
+            <td><span class="status-201">201</span></td>
+            <td>Created</td>
+        </tr>
+        <tr>
+            <td><span class="status-400">400</span></td>
+            <td>Bad Request</td>
+        </tr>
+        <tr>
+            <td><span class="status-401">401</span></td>
+            <td>Unauthorized</td>
+        </tr>
+        <tr>
+            <td>403</td>
+            <td>Forbidden</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>Not Found</td>
+        </tr>
+        <tr>
+            <td>500</td>
+            <td>Server Error</td>
+        </tr>
+    </table>
+
+    <h2>Example Usage with cURL</h2>
+    
+    <h3>1. Register</h3>
+    <div class="code-block">curl -X POST http://localhost:1820/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jean","email":"jean@example.com","password":"pass123"}'</div>
+
+    <h3>2. Login</h3>
+    <div class="code-block">curl -X POST http://localhost:1820/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jean","password":"pass123"}'</div>
+
+    <h3>3. Create Post (with token)</h3>
+    <div class="code-block">TOKEN="eyJhbGciOiJIUzUxMiJ9..."
+
+curl -X POST http://localhost:1820/api/v1/posts \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"title":"My Post","content":"Content here"}'</div>
+
+    <h3>4. List Posts</h3>
+    <div class="code-block">curl http://localhost:1820/api/v1/posts</div>
+
+    <hr>
+    <footer style="text-align: center; color: #7f8c8d; margin-top: 40px;">
+        <p>Blog REST API Documentation - Generated on 30 Mar 2026</p>
+        <p>API Base URL: <strong>http://localhost:1820/api/v1</strong></p>
+    </footer>
+</body>
+</html>
