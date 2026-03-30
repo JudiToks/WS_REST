@@ -1,20 +1,23 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.dto.CommentCreateRequest;
 import com.example.demo.dto.CommentResponse;
 import com.example.demo.dto.CommentUpdateRequest;
 import com.example.demo.service.CommentService;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
-@Tag(name = "Comments", description = "Comment management")
+@Tag(name = "Commentaires", description = "Gestion des commentaires")
 public class CommentController {
 
     private final CommentService commentService;
@@ -24,7 +27,7 @@ public class CommentController {
     }
 
     @PostMapping
-    @Operation(summary = "Create comment", description = "Add a new comment to a post")
+    @Operation(summary = "Créer un commentaire", description = "Ajouter un nouveau commentaire à un article")
     @SecurityRequirement(name = "bearerAuth")
     public CommentResponse createComment(@RequestBody CommentCreateRequest request) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -32,26 +35,26 @@ public class CommentController {
     }
 
     @GetMapping
-    @Operation(summary = "List comments", description = "Get comments for a specific post")
+    @Operation(summary = "Lister les commentaires", description = "Récupérer les commentaires d'un article spécifique")
     public List<CommentResponse> getCommentsByPost(@RequestParam Long postId) {
         return commentService.getCommentsByPost(postId);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get comment", description = "Get a specific comment by ID")
+    @Operation(summary = "Obtenir un commentaire", description = "Récupérer un commentaire par son identifiant")
     public CommentResponse getCommentById(@PathVariable Long id) {
         return commentService.getCommentById(id).orElse(null);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update comment", description = "Update an existing comment")
+    @Operation(summary = "Mettre à jour un commentaire", description = "Modifier un commentaire existant")
     @SecurityRequirement(name = "bearerAuth")
     public CommentResponse updateComment(@PathVariable Long id, @RequestBody CommentUpdateRequest request) {
         return commentService.updateComment(id, request);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete comment", description = "Delete a comment")
+    @Operation(summary = "Supprimer un commentaire", description = "Supprimer un commentaire par son identifiant")
     @SecurityRequirement(name = "bearerAuth")
     public void deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);

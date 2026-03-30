@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Authentication", description = "User registration and login")
+@Tag(name = "Authentification", description = "Inscription et connexion des utilisateurs")
 public class AuthController {
     private final AuthService authService;
     
@@ -20,7 +20,7 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    @Operation(summary = "Register new user", description = "Create a new user account")
+    @Operation(summary = "Inscription", description = "Créer un nouveau compte utilisateur")
     @ApiResponse(responseCode = "200", description = "User registered successfully",
         content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponse.class)))
     @ApiResponse(responseCode = "400", description = "Invalid input")
@@ -29,7 +29,7 @@ public class AuthController {
     }
     
     @PostMapping("/login")
-    @Operation(summary = "Login user", description = "Authenticate and get JWT token")
+    @Operation(summary = "Connexion", description = "S'authentifier et obtenir un jeton JWT")
     @ApiResponse(responseCode = "200", description = "Login successful",
         content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponse.class)))
     @ApiResponse(responseCode = "401", description = "Invalid credentials")

@@ -1,19 +1,22 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.RatingCreateRequest;
-import com.example.demo.dto.RatingResponse;
-import com.example.demo.service.RatingService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.example.demo.dto.RatingCreateRequest;
+import com.example.demo.dto.RatingResponse;
+import com.example.demo.service.RatingService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/ratings")
-@Tag(name = "Ratings", description = "Rating management")
+@Tag(name = "Notes", description = "Gestion des notes des articles")
 public class RatingController {
 
     private final RatingService ratingService;
@@ -23,7 +26,7 @@ public class RatingController {
     }
 
     @PostMapping
-    @Operation(summary = "Rate post", description = "Rate a blog post")
+    @Operation(summary = "Noter un article", description = "Ajouter une note à un article de blog")
     @SecurityRequirement(name = "bearerAuth")
     public RatingResponse ratePost(@RequestBody RatingCreateRequest request) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -31,19 +34,19 @@ public class RatingController {
     }
 
     @GetMapping
-    @Operation(summary = "List ratings", description = "Get ratings for a specific post")
+    @Operation(summary = "Lister les notes", description = "Récupérer les notes d’un article spécifique")
     public List<RatingResponse> getRatingsByPost(@RequestParam Long postId) {
         return ratingService.getRatingsByPost(postId);
     }
 
     @GetMapping("/average/{postId}")
-    @Operation(summary = "Get average rating", description = "Get average rating for a post")
+    @Operation(summary = "Obtenir la note moyenne", description = "Calculer la note moyenne d’un article")
     public Double getAverageRating(@PathVariable Long postId) {
         return ratingService.getAverageRating(postId);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete rating", description = "Delete a rating")
+    @Operation(summary = "Supprimer une note", description = "Supprimer une note par son identifiant")
     @SecurityRequirement(name = "bearerAuth")
     public void deleteRating(@PathVariable Long id) {
         ratingService.deleteRating(id);
